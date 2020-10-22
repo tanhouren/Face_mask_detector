@@ -1,9 +1,11 @@
+print("Importing library. This might take a while...")
 import numpy as np
 import tensorflow as tf
 import cv2
 import os
 from threading import Thread
 import logging
+print("Make sure your surrounding is bright")
 
 type_list = ['got mask', 'no mask','wear incorrectly']
 WIDTH = 640
@@ -86,9 +88,11 @@ def main():
 			logging.info(msg="Exiting")
 			exit()
 			break
+			
+
 	cv2.destroyAllWindows() 
 	cam.release()
-
+	
 
 if __name__ =='__main__':
 	main()
