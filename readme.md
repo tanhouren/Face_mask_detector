@@ -4,7 +4,7 @@
 
 #### The dataset can be obtain from : https://www.kaggle.com/andrewmvd/face-mask-detection . Author : Larxel
 
-#### dependencies : opencv, tensorflow.
+#### dependencies : opencv, tensorflow 2.
 
 #### MAKE SURE YOU HAVE A WEBCAM ON YOU COMPUTER.
 
