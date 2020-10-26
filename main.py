@@ -50,9 +50,9 @@ def get_output(interpreter,output_details,i_detail,cam):
 		output = [boxes,classes,scores,num]
 
 def draw_and_show(box,classes,scores,num,frame):
-	for i in range(int(num)):
+	for i in range(int(num[0])):
 		# print(scores[0][int(i)-1])
-		if scores[0][i] > 0.6:
+		if scores[0][i] > 0.8:
 			y,x,bottom,right = box[0][i]
 			x,right = int(x*WIDTH),int(right*WIDTH)
 			y,bottom = int(y*HEIGHT),int(bottom*HEIGHT)
