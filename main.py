@@ -86,6 +86,8 @@ def main():
 		if key == 27:
 			done = True
 			logging.info(msg="Exiting")
+			camera.join()
+			inference.join()
 			exit()
 			break
 			
