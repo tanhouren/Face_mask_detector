@@ -7,6 +7,10 @@ from threading import Thread
 import logging
 print("Make sure your surrounding is bright")
 
+# You can change the model by simply change the path
+model_path= 'ssd_mobilenet_v2_fpnlite.tflite'
+####################################################
+
 type_list = ['got mask', 'no mask','wear incorrectly']
 WIDTH = 640
 HEIGHT = 480
@@ -15,16 +19,16 @@ output = None
 done = False
 logging.basicConfig(level=logging.INFO,format='%(levelname)s: %(message)s')
 
-def model_init(model_path):
-	interpreter = tf.lite.Interpreter(model_path=model_path)
+def model_init(path):
+	interpreter = tf.lite.Interpreter(model_path=path)
 	interpreter.allocate_tensors()
 	input_details = interpreter.get_input_details()
 	output_details = interpreter.get_output_details()
 	return interpreter, input_details, output_details
 
-def imread(img):
+def imread(img,shape):
 	if img is not None:
-		img_ = cv2.resize((img*2/255)-1,(320,320))
+		img_ = cv2.resize((img*2/255)-1,(shape,shape))
 		img_ = img_[np.newaxis,:,:,:].astype('float32')
 		return img_
 
@@ -35,12 +39,12 @@ def cam_running(cam):
 		_, frame_ = cam.read()
 		frame = frame_
 
-def get_output(interpreter,output_details,i_detail,cam):
+def get_output(interpreter,output_details,i_detail,cam,shape):
 	global output
 	global done
 	while not done:
 		_,img = cam.read()
-		output_frame = imread(img)
+		output_frame = imread(img,shape)
 		interpreter.set_tensor(i_detail[0]['index'], output_frame)
 		interpreter.invoke()
 		boxes = interpreter.get_tensor(output_details[0]['index'])
@@ -70,9 +74,9 @@ def main():
 	cam = cv2.VideoCapture(0)
 	cam.set(3,WIDTH)
 	cam.set(4,HEIGHT)
-	interpret, i_detail, o_detail = model_init(os.path.join(os.getcwd(),"model_new.tflite"))
+	interpret, i_detail, o_detail = model_init(os.path.join(os.getcwd(),model_path))
 	camera = Thread(target=cam_running,args=(cam,))
-	inference = Thread(target=get_output,args=(interpret,o_detail,i_detail,cam))
+	inference = Thread(target=get_output,args=(interpret,o_detail,i_detail,cam,i_detail[0]['shape'][1]))
 	logging.info(msg="Start inference")
 	camera.start()
 	inference.start()
