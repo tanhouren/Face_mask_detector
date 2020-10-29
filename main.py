@@ -24,7 +24,7 @@ def model_init(model_path):
 
 def imread(img):
 	if img is not None:
-		img_ = cv2.resize((img*2/255)-1,(300,300))
+		img_ = cv2.resize((img*2/255)-1,(320,320))
 		img_ = img_[np.newaxis,:,:,:].astype('float32')
 		return img_
 
@@ -70,7 +70,7 @@ def main():
 	cam = cv2.VideoCapture(0)
 	cam.set(3,WIDTH)
 	cam.set(4,HEIGHT)
-	interpret, i_detail, o_detail = model_init(os.path.join(os.getcwd(),"model.tflite"))
+	interpret, i_detail, o_detail = model_init(os.path.join(os.getcwd(),"model_new.tflite"))
 	camera = Thread(target=cam_running,args=(cam,))
 	inference = Thread(target=get_output,args=(interpret,o_detail,i_detail,cam))
 	logging.info(msg="Start inference")
