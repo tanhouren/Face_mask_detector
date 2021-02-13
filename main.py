@@ -28,7 +28,8 @@ def model_init(path):
 
 def imread(img,shape):
 	if img is not None:
-		img_ = cv2.resize((img*2/255)-1,(shape,shape))
+		img_ = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+		img_ = cv2.resize((img_*2/255)-1,(shape,shape))
 		img_ = img_[np.newaxis,:,:,:].astype('float32')
 		return img_
 
